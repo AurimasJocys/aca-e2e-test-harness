@@ -117,7 +117,10 @@ greeting-blocks:
     block:
       - greeting: 23
       - greeting: 24
-      
+  - id: 7
+    block: 
+      - greeting: 0
+      - greeting: 1
 ---
 test-cases:
   - name: "1 - Action Tags: customerIdentification, changeWA, accountDetails, billingInquiry, billingCard, myaAuth"
@@ -607,3 +610,61 @@ test-cases:
   #     - bot: "Let's pull up your account details."
   #     - greeting-block: 3
   #     - greeting-block: 5
+  - name: "17 - Action Tags: dioNewServices"
+    typing: False
+    script: 
+      - greeting-block: 7
+      - human: "Inquire about new service or upgrades"
+      - bot: "I am happy to assist you! Please select an option below."
+      - buttons: "[\"New customer to CenturyLink\",\"Get a quote to add or upgrade service\",\"Order and Appointment Status\",\"Internet and Repair Support\",\"Something Else\"]"
+      - human: "New Customer to CenturyLink"
+      - bot: "To begin, what services are you interested in?"
+        partial: False
+      - buttons: "[\"Internet Services\",\"Internet and Phone Services\",\"Phone Service\",\"Something Else\"]"
+      - human: "Internet Services"
+      - bot: "<ui input=\"\"></ui>  To help route your chat to the appropriate team, please select your state from the dropdown:"
+        partial: False
+      - buttons: "[\"Alabama\",\"Arizona\",\"Arkansas\",\"Colorado\",\"Florida\",\"Georgia\",\"Idaho\",\"Illinois\",\"Indiana\",\"Iowa\",\"Kansas\",\"Louisiana\",\"Michigan\",\"Minnesota\",\"Mississippi\",\"Missouri\",\"Montana\",\"Nebraska\",\"Nevada\",\"New Jersey\",\"New Mexico\",\"North Carolina\",\"North Dakota\",\"Ohio\",\"Oklahoma\",\"Oregon\",\"Pennsylvania\",\"South Carolina\",\"South Dakota\",\"Tennessee\",\"Texas\",\"Utah\",\"Virginia\",\"Washington\",\"Wisconsin\",\"Wyoming\"]"
+      - human: "Wisconsin"
+      - bot: "Your account is now being serviced by Brightspeed. To chat with Brightspeed click <a href=\"https://www.brightspeed.com/help/chatnow\">here</a>. It was a pleasure to help you today.<ui noinput=\"\"></ui>"
+        partial: False
+  - name: "18 - Action Tags: changeWA, orderDetails, myAuth, customerIdentification, accountDetails, ui"
+    typing: true
+    script:
+      - bot: "Hello, I am the CenturyLink Virtual Agent. Please select an option below or tell me in a few words how I can help today."
+        partial: false
+      - buttons: "[\"Inquire about new service or upgrades\",\"Internet and Repair Support\",\"Technician Status\",\"Billing or Payment\",\"Online Portal Help\",\"Inquire about $1.00 monthly paper bill fee\",\"Something Else\"]"
+      - human: "Can I check on the status of my order?"      
+      - bot: "In order to further assist, we need to authenticate you. Please click on one of the two choices below."
+        partial: false
+        type: chat-api
+      - login: "Log in with My CenturyLink online account"
+        type: chat-api
+      - buttons: "[\"Use another method\"]"
+      - human: Use another method
+      - bot:  "Let's pull up your account details. Please enter one of the following: Your account number, telephone number, or email address."
+        partial: false
+      - human: "330456276"   
+      - bot: "Thank You. Give me a moment while I pull up your account."
+        partial: false
+      - bot: "To verify and protect your account, please enter both the last 4 of  the social security number on file and zip code."
+        partial: false
+      - human: "3863 83221"
+      - bot: "I understand you have an inquiry about your service. Please select an option below that best meets your request:"
+        partial: false
+      - buttons: "[\"Get Details on a Pending Order\",\"Modem Shipment\",\"Change or Cancel Appointment\",\"Inquiry About a Move Order\",\"Something Else\"]"
+      - human: "Get Details on a Pending Order"
+  - name: "19 - Action Tags: changeWA, usernameReminder"
+    typing: true
+    script:
+      - bot: "Hello, I am the CenturyLink Virtual Agent. Please select an option below or tell me in a few words how I can help today."
+        partial: false
+      - buttons: "[\"Inquire about new service or upgrades\",\"Internet and Repair Support\",\"Technician Status\",\"Billing or Payment\",\"Online Portal Help\",\"Inquire about $1.00 monthly paper bill fee\",\"Something Else\"]"
+      - human: "Forgot username"    
+      - bot: "To help you with the right username solution, please tell me what you are trying to access:"
+        partial: false
+      - buttons: "[\"My CenturyLink Online Account\",\"Modem, Router or WiFi\",\"CenturyLink Email\",\"My CenturyLink App\",\"That's not what I need\"]"
+      - human: "My CenturyLink Online Account"  
+      - bot: "Please type the email associated with your account below."
+        partial: false
+      - buttons: "[\"Can't Access Email\",\"Go back\"]"
