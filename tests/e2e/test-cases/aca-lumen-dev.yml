@@ -1,0 +1,608 @@
+greetings: 
+  - id: 0
+    bot: "Hello, I am the CenturyLink Virtual Agent. Please select an option below or tell me in a few words how I can help today."
+  - id: 1
+    buttons: "[\"Inquire about new service or upgrades\",\"Internet and Repair Support\",\"Technician Status\",\"Billing or Payment\",\"Online Portal Help\",\"Inquire about $1.00 monthly paper bill fee\",\"Something Else\"]"
+  - id: 2 
+    human: "troubleshooting test"
+  - id: 3
+    bot: "Please enter TN to test"
+  - id: 4
+    human: "Internet and Repair Support"
+
+  - id: 5
+    bot: "In order to further assist, we need to authenticate you. Please click on one of the two choices below."
+  - id: 6
+    login: "Log in with My CenturyLink online account"
+    type: chat-api
+  - id: 7
+    buttons: "[\"Use another method\"]"
+  - id: 8
+    human: "Use another method"
+  - id: 9
+    bot: "Let's pull up your account details. Please enter one of the following: Your account number, telephone number, or email address."
+  - id: 10
+    human: "330456276"
+  - id: 11
+    bot: "Thank You. Give me a moment while I pull up your account."
+    partial: False
+  - id: 12
+    bot: "To verify and protect your account, please enter the 5 digit zip code on the account."
+    partial: False
+  - id: 13
+    human: "3863 83221"
+
+  - id: 14
+    buttons: "[\"SMB No Sync\",\"SMB Slow Speed\",\"SMB Upload Speed\",\"SMB Service Order\",\"SMB WG\",\"Create ticket\",\"Hlog Dispatch Recommendation\",\"Pending Order\",\"IWP\",\"Voice ENS Issue\",\"DaaS\",\"DR\"]"
+
+  - id: 15
+    bot: "Great, thank you. Give me a moment while I pull up your account information. I have your account. Give me a few moments while we check your connection to our network."
+  - id: 16
+    bot: "One moment while I continue the connectivity check."
+  - id: 17
+    bot: "Gathering info and doing checks. One moment please."
+    # if connectivity check 1 is reached or passed, than ticketInfo action tag is being called
+  - id: 18
+    bot: "Connectivity check 1 of 4 completed."
+    #if connectivity check 2 was passed or reached than nokia action tag is being called
+  - id: 19
+    bot: "Connectivity check 2 of 4 completed."
+    # If check 3 was passed or reached, then dslam action tag is being called
+  - id: 20
+    bot: "Connectivity check 3 of 4 completed."
+    # if check 4 was reached or passed, modemInfo and speedTestRealTime are bing called (speedTestRealTime then modemInfo)
+  - id: 21
+    bot: "Connectivity check 4 of 4 completed."
+    # if all pass, check with stationThroughput action tag
+  - id: 22
+    bot: "Your modem connectivity looks good. I'm now checking your wireless device connectivity."
+  - id: 25
+    bot: "Still checking, one moment please."
+
+  # greeting lines for dropAction tag
+  - id: 23
+    bot: "If you have another question just type it below, or pick from the following options:"
+  - id: 24
+    buttons: "[\"Chat with a Representative\",\"All done\"]"
+
+greeting-blocks:
+  # inital greeting steps // asking for TN for testing route
+  - id: 1
+    block:
+      - greeting: 0
+      - greeting: 1
+      - greeting: 2
+      - greeting: 3
+  # inital greeting steps // asking for button input for prod routes
+  - id: 2
+    block:
+      - greeting: 0
+      - greeting: 1
+      - greeting: 4
+
+    # centryLink login step
+  - id: 3
+    block:
+      - greeting: 5
+      - greeting: 6
+      - greeting: 7
+      - greeting: 8
+      - greeting: 9
+      - greeting: 10
+      - greeting: 11
+      - greeting: 12
+      - greeting: 13
+  
+  #TN sign in
+  - id: 4
+    block: 
+      - greeting: 0
+      - greeting: 1
+      - greeting: 2
+      - greeting: 3
+      - greeting: 10
+      - greeting: 14
+
+  #connectivity test
+  - id: 5
+    block: 
+      - greeting: 15
+      - greeting: 16
+      - greeting: 18
+      - greeting: 17
+      - greeting: 25
+
+  # greeting block for drop action response
+  - id: 6
+    block:
+      - greeting: 23
+      - greeting: 24
+---
+test-cases:
+  - name: "1 - Action Tags: customerIdentification, changeWA, accountDetails, billingInquiry, billingCard, myaAuth"
+    typing: true
+    script:
+      - bot: Hello, I am the CenturyLink Virtual Agent. Please select an option below or tell me in a few words how I can help today.
+        partial: false
+      - buttons: "[\"Inquire about new service or upgrades\",\"Internet and Repair Support\",\"Technician Status\",\"Billing or Payment\",\"Online Portal Help\",\"Inquire about $1.00 monthly paper bill fee\",\"Something Else\"]"
+      - human: balance
+      - bot: In order to further assist, we need to authenticate you. Please click on one of the two choices below.
+        partial: false
+        type: chat-api
+      - login: "Log in with My CenturyLink online account"
+        type: chat-api
+      - buttons: "[\"Use another method\"]"
+      - human: Use another method
+      - bot: "Let's pull up your account details. Please enter one of the following: Your account number, telephone number, or email address."
+        partial: false
+      - human: "496818438"
+      - bot: "Thank You. Give me a moment while I pull up your account."
+        partial: false
+      - bot: "To verify and protect your account, please enter the 5 digit zip code on the account."
+        partial: false
+      - human: "83702"
+      - billingCard: true
+  - name: "2 - Action Tags: changeWa, myaAuth, accountDetails, billingInquiry, makePayment"
+    typing: true
+    script:
+      - bot:  "Hello, I am the CenturyLink Virtual Agent. Please select an option below or tell me in a few words how I can help today."
+        partial: false
+      - buttons: "[\"Inquire about new service or upgrades\",\"Internet and Repair Support\",\"Technician Status\",\"Billing or Payment\",\"Online Portal Help\",\"Inquire about $1.00 monthly paper bill fee\",\"Something Else\"]"
+      - human:  "payment arrangement"
+      - bot:  "At CenturyLink we make it easy for customers to make payment arrangements. These can be completed online yourself or I will be happy to assist you."
+        partial: false
+      - buttons: "[\"Payment Arrangement via Chat\",\"Online Payment Arrangement\",\"Details about existing arrangement\",\"Cancel or change arrangement\",\"Something else\"]"
+      - human:  "Payment Arrangement via Chat"
+      - bot:  "In order to further assist, we need to authenticate you. Please click on one of the two choices below."
+        partial: false
+      - login: "Log in with My CenturyLink online account"
+      - buttons: "[\"Use another method\"]"
+      - human:  "Use another method"
+      - bot:  "Let's pull up your account details. Please enter one of the following: Your account number, telephone number, or email address."
+        partial: false
+      - human:  "330456276"
+      - bot:  "Thank You. Give me a moment while I pull up your account."
+        partial: false
+      - bot:  "To verify and protect your account, please enter the 5 digit zip code on the account."
+        partial: false
+      - human:  "83221"
+      # The balance and date changes
+      - bot:  "Your account is enrolled in our convenient autopay service. A balance "
+        partial: true
+      - buttons: "[\"Cancel or Change Autopay\",\"Make a one time Payment\",\"Make a Payment Arrangement\"]"
+      - human:  "Make a pre-payment"
+      - bot:  "Please wait for the secure form to load..."
+        partial: false 
+  - name: "3 - Action Tags: changeWa, myaAuth, customerIdentification, accountDetails, productInfo, ticketInfo"
+    typing: true
+    script: 
+      - bot: "Hello, I am the CenturyLink Virtual Agent. Please select an option below or tell me in a few words how I can help today."
+        partial: false
+      - buttons: "[\"Inquire about new service or upgrades\",\"Internet and Repair Support\",\"Technician Status\",\"Billing or Payment\",\"Online Portal Help\",\"Inquire about $1.00 monthly paper bill fee\",\"Something Else\"]"
+      - human: "Inquire about new service or upgrades"
+      - bot: "I am happy to assist you! Please select an option below."
+        partial: false
+      - buttons: "[\"New customer to CenturyLink\",\"Get a quote to add or upgrade service\",\"Order and Appointment Status\",\"Internet and Repair Support\",\"Something Else\"]"
+      - human: "Order and Appointment Status"
+      - bot: "In order to further assist, we need to authenticate you. Please click on one of the two choices below."
+        partial: false
+      - login: "Log in with My CenturyLink online account"
+        type: chat-api
+      - buttons: "[\"Use another method\"]"
+      - human: "Use another method"
+      - bot: "Let's pull up your account details. Please enter one of the following: Your account number, telephone number, or email address."
+        partial: false
+      - human: "330456276"
+      - bot: "Thank You. Give me a moment while I pull up your account."
+        partial: false
+      - bot: "To verify and protect your account, please enter both the last 4 of  the social security number on file and zip code."
+        partial: false
+      - human: "3863 83221"
+      - bot: "I understand you have an inquiry about your service. Please select an option below that best meets your request:"
+        partial: false
+      - buttons: "[\"Get Details on a Pending Order\",\"Modem Shipment\",\"Change or Cancel Appointment\",\"Inquiry About a Move Order\",\"Something Else\"]"
+      - human: "Change or Cancel Appointment"
+      - bot: "I understand you'd like to cancel or reschedule your order or repair appointment.<br />"
+        partial: false
+      - bot: "May I ask if you are inquiring about an:"
+        partial: false
+      - buttons: "[\"Pending Order\",\"Repair Ticket\"]"
+      - human: "Repair Ticket"
+      - bot: "Which would you like to do with your repair appointment:"
+        partial: false
+      - buttons: "[\"Cancel\",\"Reschedule\"]"
+      - human: "Reschedule"
+      - bot: "Uh-Oh! I wasn't able to find a ticket under your account!"
+        partial: false
+      - bot: "If you have another question just type it below, or pick from the following options:"
+        partial: false
+      - buttons: "[\"Chat with a Representative\",\"All done\"]"
+  - name: "4 - Action Tags: changeWA, accountDetails, customerIdentification, outageInfo, myaAuth"
+    typing: true
+    script: 
+      - bot: "Hello, I am the CenturyLink Virtual Agent. Please select an option below or tell me in a few words how I can help today."
+      - buttons: "[\"Inquire about new service or upgrades\",\"Internet and Repair Support\",\"Technician Status\",\"Billing or Payment\",\"Online Portal Help\",\"Inquire about $1.00 monthly paper bill fee\",\"Something Else\"]"
+      - human: "Internet and Repair Support"
+      - bot: "I understand you are having technical difficulties."
+        partial: true
+      - buttons: "[\"Internet, Wi-Fi, Modem\",\"Email Support\",\"Phone\",\"All Services\",\"Report a line down\",\"Satellite TV\"]"
+      - human: "Internet, Wi-Fi, Modem"
+      - bot: "Help me narrow down your issue."
+        partial: true
+      - buttons: "[\"Slow Internet Connection\",\"No Internet Connection\",\"Modem and Wi-Fi Connections\"]"
+      - human: "Slow Internet Connection"
+      - bot: "Alright got it, you are having a slow speed issue."
+        partial: true
+      - bot: "Let's pull up your account details."
+        partial: true
+      - bot: "In order to further assist, we need to authenticate you."
+        partial: true
+      - login: "Log in with My CenturyLink online account"
+        type: chat-api
+      - buttons: "[\"Use another method\"]"
+      - human: "Use another method"
+      - bot: "Let's pull up your account details. Please enter one of the following"
+        partial: true
+      - human: "330456276"
+      - bot: "Thank You. Give me a moment while I pull up your account."
+        partial: true
+      - bot: "To verify and protect your account, please enter the 5 digit zip code on the account."
+        partial: true
+      - human: "83221"
+      - bot: "Great, thank you. Give me a moment while I pull up your account information."
+        partial: true
+      - bot: "One moment while I continue the connectivity check."
+        partial: true
+  - name: "5 - Action Tags: changeWA, myaAuth, customerIdentification, accountDetails, billingInquiry, billingCard"
+    typing: true
+    script: 
+      - bot: "Hello, I am the CenturyLink Virtual Agent. Please select an option below or tell me in a few words how I can help today."
+        partial: false
+      - buttons: "[\"Inquire about new service or upgrades\",\"Internet and Repair Support\",\"Technician Status\",\"Billing or Payment\",\"Online Portal Help\",\"Inquire about $1.00 monthly paper bill fee\",\"Something Else\"]"
+      - human: "Billing or Payment"
+      - bot: "I can help! Please select the option the best fits your request:"
+        partial: false
+      - buttons: "[\"Balance and Payment Questions\",\"Restore Service\",\"Billing Error\",\"Billing Statement\",\"Something Else\"]"
+      - human: "Balance and Payment Questions"
+      - bot: In order to further assist, we need to authenticate you. Please click on one of the two choices below.
+        partial: false
+        type: chat-api
+      - login: "Log in with My CenturyLink online account"
+        type: chat-api
+      - buttons: "[\"Use another method\"]"
+      - human: "Use another method"
+      - bot: "Let's pull up your account details. Please enter one of the following: Your account number, telephone number, or email address."
+        partial: false
+      - human: "330456276"
+      - bot: "Thank You. Give me a moment while I pull up your account."
+        partial: false
+      - bot: "To verify and protect your account, please enter the 5 digit zip code on the account."
+        partial: false
+      - human: "83221"
+      - billingCard: true
+  - name: "6 - Action Tags: changeWA, myaAuth, customerIdentification, accountDetails, miniSurvey, a"
+    typing: true
+    script:
+      - bot: "Hello, I am the CenturyLink Virtual Agent. Please select an option below or tell me in a few words how I can help today."
+        partial: false
+      - buttons: "[\"Inquire about new service or upgrades\",\"Internet and Repair Support\",\"Technician Status\",\"Billing or Payment\",\"Online Portal Help\",\"Inquire about $1.00 monthly paper bill fee\",\"Something Else\"]"
+      - human: "modem status"
+      - bot: "In order to further assist, we need to authenticate you. Please click on one of the two choices below."
+        partial: false
+        type: chat-api
+      - login: "Log in with My CenturyLink online account"
+        type: chat-api
+      - buttons: "[\"Use another method\"]"
+      - human: Use another method
+      - bot:  "Let's pull up your account details. Please enter one of the following: Your account number, telephone number, or email address."
+        partial: false
+      - human: "PPB03586156"   
+      - bot: "Thank You. Give me a moment while I pull up your account."
+        partial: false
+      - bot: "Your service is provided through your local community. We have a team dedicated to CenturyLinkOn customers. The number is 1-866-872-0238. Click <a target=\"_blank\" href=\"https://conport.centurylink.com/instaLink/#/intro\">here</a> for assistance. I apologize for the inconvenience, We do not have access to these accounts in the chat department."
+        partial: false
+      - bot: "It was a pleasure to help you today."
+        partial: false
+      - bot: "Please take a minute to fill out the survey <b>below</b> regarding your experience today.  Thank you for choosing CenturyLink! <br />"
+        partial: false
+      - miniSurvey: 'miniSurvey'
+  - name: "7 - Action Tags: changeWA, myaAuth, customerIdentification, accountDetails, accountRegistration, getEmailofRecord, ui noinput"
+    typing: true
+    script:
+      - bot: "Hello, I am the CenturyLink Virtual Agent. Please select an option below or tell me in a few words how I can help today."
+        partial: false
+      - buttons: "[\"Inquire about new service or upgrades\",\"Internet and Repair Support\",\"Technician Status\",\"Billing or Payment\",\"Online Portal Help\",\"Inquire about $1.00 monthly paper bill fee\",\"Something Else\"]"
+      - human: "set up online account"
+      - bot: "In order to further assist, we need to authenticate you. Please click on one of the two choices below."
+        partial: false
+        type: chat-api
+      - login: "Log in with My CenturyLink online account"
+        type: chat-api
+      - buttons: "[\"Use another method\"]"
+      - human: Use another method
+      - bot:  "Let's pull up your account details. Please enter one of the following: Your account number, telephone number, or email address."
+        partial: false
+      - human: "330456276"   
+      - bot: "Thank You. Give me a moment while I pull up your account."
+      - bot:  "To verify and protect your account, please enter the 5 digit zip code on the account."
+        partial: false
+      - human: "83221"   
+      - bot: "I will be glad to help you with setting up your My CenturyLink account."
+        partial: false
+      - bot: "One moment while I review your account information."
+        partial: false
+      - bot: "The account you are chatting about is not currently setup in My CenturyLink. Let me work on that for you."
+        partial: false
+      - bot: "One moment while I retrieve your email."
+        partial: false
+      - bot: "I found <b>BOBBI_LILYA@HOTMAIL.COM</b> from your record."
+        partial: false      
+      - bot: "I will be sending information to this email address to assist in setting up your account. Do you have access to this account?"
+        partial: false   
+      - buttons: "[\"Yes, proceed with this email\",\"No, the email is incorrect\"]"
+      - human: "No, this email is incorrect"
+      - bot: "I had some difficulties with your last query."
+        partial: false         
+  - name: "8 - Action Tags: changeWA, myaAuth, customerIdentification, accountDetails, sfCaseID, bmhsiavailability, ui noinput, handoverskill, miniSurvey "
+    typing: true
+    script:
+      - bot: "Hello, I am the CenturyLink Virtual Agent. Please select an option below or tell me in a few words how I can help today."
+        partial: false
+      - buttons: "[\"Inquire about new service or upgrades\",\"Internet and Repair Support\",\"Technician Status\",\"Billing or Payment\",\"Online Portal Help\",\"Inquire about $1.00 monthly paper bill fee\",\"Something Else\"]"
+      - human: "account cancellation"
+      - bot: "In order to further assist, we need to authenticate you. Please click on one of the two choices below."
+        partial: false
+        type: chat-api
+      - login: "Log in with My CenturyLink online account"
+        type: chat-api
+      - buttons: "[\"Use another method\"]"
+      - human: Use another method
+      - bot:  "Let's pull up your account details. Please enter one of the following: Your account number, telephone number, or email address."
+        partial: false
+      - human: "330456276"   
+      - bot: "Thank You. Give me a moment while I pull up your account."
+      - bot:  "To verify and protect your account, please enter both the last 4 of  the social security number on file and zip code."
+        partial: false
+      - human: "3863 83221"   
+      - bot:  "<ui input=\"\"></ui>"
+        partial: false
+      - bot: "Please provide the <b>FIRST & LAST NAME</b> of the person we will be speaking with today"
+        partial: false
+      - human: "run test"
+      - bot: "I'm sorry. I need to get you connected to one of our account specialists on the phone to assist with your request. Please call 1-800-201-4099 and one of our agents will be happy to help.  Open  7 am-8 pm CT Monday-Friday <ui input=\"\"></ui>"
+        partial: false
+      - bot: "It was a pleasure to help you today."
+        partial: false
+      - bot: "Please take a minute to fill out the survey <b>below</b> regarding your experience today.  Thank you for choosing CenturyLink! <br />"
+        partial: false
+      - miniSurvey: 'miniSurvey'
+  - name: "9 - Action Tags: changeWA, myaAuth, customerIdentification, accountDetails, accountRegistration, getEmailOfRecord, usernameAsEmail, createShellUser, ui noinput, handoverskill"
+    typing: true
+    script:
+      - bot: "Hello, I am the CenturyLink Virtual Agent. Please select an option below or tell me in a few words how I can help today."
+        partial: false
+      - buttons: "[\"Inquire about new service or upgrades\",\"Internet and Repair Support\",\"Technician Status\",\"Billing or Payment\",\"Online Portal Help\",\"Inquire about $1.00 monthly paper bill fee\",\"Something Else\"]"
+      - human: "Account Set Up"
+      - bot: "In order to further assist, we need to authenticate you. Please click on one of the two choices below."
+        partial: false
+        type: chat-api
+      - login: "Log in with My CenturyLink online account"
+        type: chat-api
+      - buttons: "[\"Use another method\"]"
+      - human: Use another method
+      - bot:  "Let's pull up your account details. Please enter one of the following: Your account number, telephone number, or email address."
+        partial: false
+      - human: "330456276"   
+      - bot: "Thank You. Give me a moment while I pull up your account."
+      - bot:  "To verify and protect your account, please enter the 5 digit zip code on the account."
+        partial: false
+      - human: "83221"   
+      - bot: "I will be glad to help you with setting up your My CenturyLink account."
+        partial: false
+      - bot: "One moment while I review your account information."
+        partial: false
+      - bot: "The account you are chatting about is not currently setup in My CenturyLink. Let me work on that for you."
+        partial: false
+      - bot: "One moment while I retrieve your email."
+        partial: false
+      - bot: "I found <b>BOBBI_LILYA@HOTMAIL.COM</b> from your record."
+        partial: false
+      - bot: "I will be sending information to this email address to assist in setting up your account. Do you have access to this account?"
+        partial: false
+      - buttons: "[\"Yes, proceed with this email\",\"No, the email is incorrect\"]"
+      - human: "Yes, proceed with this email"
+      - bot: "Thank you for confirming your email address."
+        partial: false
+      - bot: "One moment while I check if your email is associated with an existing My CenturyLink online account."
+        partial: false
+      - bot: "It looks like your email isn't currently associated with a My CenturyLink online account."
+        partial: false
+      - bot: "Hang tight while I process your account creation request."
+        partial: false
+      - bot: "I am unable to help you with your request, just a moment while I transfer you to an agent for further assistance."
+        partial: false
+      - bot: "<ui input=\"\"></ui>  Please provide the <b>FIRST & LAST NAME</b> of the person we will be speaking with today"
+        partial: false
+      - human: "run test"
+      - bot: "I'm sorry, you have contacted us outside of business hours and our agents are unavailable to assist you at this time. "
+        partial: true
+      - bot: "Please select an option below:"
+        partial: false
+      - buttons: "[\"Have an agent text me during business hours\",\"I will contact CenturyLink during business hours\"]"
+  - name: "10 - Action Tags: changeWA, myaAuth, customerIdentification, accountDetails, billingInquiry, oneTimeChargeDetailReplace,miniSurvey"
+    typing: true
+    script:
+      - bot: "Hello, I am the CenturyLink Virtual Agent. Please select an option below or tell me in a few words how I can help today."
+        partial: false
+      - buttons: "[\"Inquire about new service or upgrades\",\"Internet and Repair Support\",\"Technician Status\",\"Billing or Payment\",\"Online Portal Help\",\"Inquire about $1.00 monthly paper bill fee\",\"Something Else\"]"
+      - human: "one time charge"
+      - bot: "You can view information about one time charges by clicking <a target=\"_blank\" href=\"https://www.centurylink.com/home/help/account/billing/understanding-one-time-charges-on-your-bill.html?refcode=Bot0018\">here</a>."
+        partial: false
+      - bot: "If you'd like additional assistance please click below, or type your next question:"
+        partial: false
+      - buttons: "[\"Show me the one time charges on my last bill\",\"That’s not what I need\",\"All Done\"]"
+      - human: "Show me the one time charges on my last bill"
+      - bot: "In order to further assist, we need to authenticate you. Please click on one of the two choices below."
+        partial: false
+        type: chat-api
+      - login: "Log in with My CenturyLink online account"
+        type: chat-api
+      - buttons: "[\"Use another method\"]"
+      - human: Use another method
+      - bot:  "Let's pull up your account details. Please enter one of the following: Your account number, telephone number, or email address."
+        partial: false
+      - human: "330456276"   
+      - bot: "Thank You. Give me a moment while I pull up your account."
+      - bot:  "To verify and protect your account, please enter the 5 digit zip code on the account."
+        partial: false
+      - human: "83221"
+      - bot:  "Let's fetch your billing details.."
+        partial: false
+      - bot:  "I have found the following onetime charge on your previous bill:  <br />  <br />  Collections -Essential $25.00"
+        partial: false
+      - bot:  "If you'd like additional assistance, please click below, or type your next question:"
+        partial: false
+      - buttons: "[\"That’s not what I need\",\"Agent\",\"All done\"]"
+      - bot:  "If you'd like additional assistance, please click below, or type your next question:"
+        partial: false
+      - human: "All Done"   
+      - buttons: "[\"That’s not what I need\",\"Agent\",\"All done\"]"
+      - bot: "It was a pleasure to help you today."
+        partial: false
+      - bot: "Please take a minute to fill out the survey <b>below</b> regarding your experience today.  Thank you for choosing CenturyLink! <br />"
+        partial: false
+      - miniSurvey: 'miniSurvey'
+  # Fails after "billingCard"
+  - name: "11 - Action Tags: changeWA, myaAuth, customerIdentification, accountDetails, billingInquiry, billingCard, makePayment, checkPayment, miniSurvey"
+    typing: true
+    script:
+      - bot: "Hello, I am the CenturyLink Virtual Agent. Please select an option below or tell me in a few words how I can help today."
+        partial: false
+      - buttons: "[\"Inquire about new service or upgrades\",\"Internet and Repair Support\",\"Technician Status\",\"Billing or Payment\",\"Online Portal Help\",\"Inquire about $1.00 monthly paper bill fee\",\"Something Else\"]"
+      - human: "Make a payment"
+      - bot: "In order to provide more personalized payment options I'll need to authenticate your account. Do you wish to continue?"
+        partial: false
+      - buttons: "[\"Yes\",\"No\"]"
+      - human: "Yes"
+      - bot: "In order to further assist, we need to authenticate you. Please click on one of the two choices below."
+        partial: false
+        type: chat-api
+      - login: "Log in with My CenturyLink online account"
+        type: chat-api
+      - buttons: "[\"Use another method\"]"
+      - human: Use another method
+      - bot:  "Let's pull up your account details. Please enter one of the following: Your account number, telephone number, or email address."
+        partial: false
+      - human: "330456276"   
+      - bot: "Thank You. Give me a moment while I pull up your account."
+        partial: false
+      - bot: "To verify and protect your account, please enter the 5 digit zip code on the account."
+        partial: false
+      - human: "83221"
+      - billingCard: true
+      # - human: "MAKE_PAYMENT_SUCCESS"
+      # - bot: "Please wait for the secure form to load..."
+      #   partial: false    
+      # - buttons: "[\"Continue\"]"
+      # - human: "All Done"
+      # - bot: "Your payment may still be processing. You will receive a payment confirmation email once complete. If you don't receive an email I will be happy to help look into your payment history at that time."
+      #   partial: false
+      # - buttons: "[\"All Done\"]"
+      # - human: "All Done"
+      # - bot: "It was a pleasure to help you today."
+      #   partial: false
+      # - bot: "Please take a minute to fill out the survey <b>below</b> regarding your experience today.  Thank you for choosing CenturyLink! <br />"
+      #   partial: false
+  - name: "12 - Action Tags: changeWA, myaAuth, customerIdentification, accountDetails, modemShipmentStatus, miniSurvey"
+    typing: true
+    script:
+      - bot: "Hello, I am the CenturyLink Virtual Agent. Please select an option below or tell me in a few words how I can help today."
+        partial: false
+      - buttons: "[\"Inquire about new service or upgrades\",\"Internet and Repair Support\",\"Technician Status\",\"Billing or Payment\",\"Online Portal Help\",\"Inquire about $1.00 monthly paper bill fee\",\"Something Else\"]"
+      - human: "Can I check on the status of my order?"      
+      - bot: "In order to further assist, we need to authenticate you. Please click on one of the two choices below."
+        partial: false
+        type: chat-api
+      - login: "Log in with My CenturyLink online account"
+        type: chat-api
+      - buttons: "[\"Use another method\"]"
+      - human: Use another method
+      - bot:  "Let's pull up your account details. Please enter one of the following: Your account number, telephone number, or email address."
+        partial: false
+      - human: "330456276"   
+      - bot: "Thank You. Give me a moment while I pull up your account."
+        partial: false
+      - bot: "To verify and protect your account, please enter both the last 4 of  the social security number on file and zip code."
+        partial: false
+      - human: "3863 83221"
+      - bot: "I understand you have an inquiry about your service. Please select an option below that best meets your request:"
+        partial: false
+      - buttons: "[\"Get Details on a Pending Order\",\"Modem Shipment\",\"Change or Cancel Appointment\",\"Inquiry About a Move Order\",\"Something Else\"]"
+      - human: "Modem Shipment"
+      - bot: "Would you like:"
+        partial: false      
+      - buttons: "[\"Modem Shipment Details\",\"Modem Returns\",\"Something Else\"]"
+      - human: "Modem Shipment Details"
+      - bot: "Let me get your modem shipment details"
+        partial: false   
+      - bot: "We found no recent shipments for this account."
+        partial: false   
+      - bot: "If you'd like additional assistance, please click below, or type your next question:"
+        partial: false  
+      - buttons: "[\"Agent\",\"That’s not what I need\",\"All done\"]"
+      - human: "All Done"
+      - bot: "It was a pleasure to help you today."
+        partial: false
+      - bot: "Please take a minute to fill out the survey <b>below</b> regarding your experience today.  Thank you for choosing CenturyLink! <br />"
+        partial: false
+      - miniSurvey: 'miniSurvey'
+  - name: "13 - Action Tags: changeWA, onlineAccountRegistration"
+    typing: true
+    script:
+      - bot: "Hello, I am the CenturyLink Virtual Agent. Please select an option below or tell me in a few words how I can help today."
+        partial: false
+      - buttons: "[\"Inquire about new service or upgrades\",\"Internet and Repair Support\",\"Technician Status\",\"Billing or Payment\",\"Online Portal Help\",\"Inquire about $1.00 monthly paper bill fee\",\"Something Else\"]"
+      - human: "give me my auth number"      
+      - bot: "It looks like you need help finding your security code to register your online account with CenturyLink. This can be found by clicking <a target=\"_blank\" href=\"https://dh.centurylink.com/login/retrieveAuthCode\">here</a>."
+        partial: false
+      - bot: "If you'd like additional assistance, please click below:"
+        partial: false
+      - buttons: "[\"I don't know my account number\",\"Send me my security code\",\"That's not what I need\"]"
+      - human: "Send me my security code"
+      - bot: "Type in your account number, without any spaces or words preceding.<br /><br />Examples: 567981134 or 6547892345783"
+        partial: false
+  - name: "14 - Action Tags: createTicket, nokia, dropAction"
+    typing: True
+    script: 
+      - greeting-block: 4
+      - human: "Create ticket"
+      - bot: "Please wait while we are retrieving your account."
+        partial: false
+      - bot: "Uh-oh, I found an issue but wasn't able to resolve it remotely. I need to dispatch a technician to resolve it. Would you like to proceed with setting up an appointment?"
+      - buttons: "[\"Yes I want to proceed\",\"No\"]"
+      - human: "No"
+      - bot: "Got it."
+      - greeting-block: 6
+  - name: "15 - action tags: nokia"
+    typing: True
+    script: 
+      - greeting: 0
+      - greeting: 1
+      - human: "troubleshooting test ticket"
+      - bot: "Please enter TN for dispatch creation"
+      - greeting: 10
+  # Issue running test script is never consistent
+  # - name: "16 - Action Tags: linStabilityInfo, modemInfo, speedTestRealTime, stationInfo"
+  #   typing: True
+  #   script:
+  #     - greeting-block: 2
+  #     - bot: "I understand you are having technical difficulties. How can I help? Please choose one of the following options"
+  #       partial: false
+  #     - buttons: "[\"Internet, Wi-Fi, Modem\",\"Email Support\",\"Phone\",\"All Services\",\"Report a line down\",\"Satellite TV\"]"
+  #     - human: "Internet, Wi-Fi, Modem"
+  #     - bot: "Help me narrow down your issue. Which one of these options best describes your issue?"
+  #     - buttons: "[\"Slow Internet Connection\",\"No Internet Connection\",\"Other\"]"
+  #     - human: "Other"
+  #     - bot: "Let's pull up your account details."
+  #     - greeting-block: 3
+  #     - greeting-block: 5
